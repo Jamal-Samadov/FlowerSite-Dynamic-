@@ -1,0 +1,53 @@
+﻿@using FlowerSite.Areas.admin.Models
+@model CategoryCreateModel
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create category</h4>
+                <form class="forms-sample" method="post" asp-action="Create">
+                    <div class="form-group">
+                        <label asp-for="Name">Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="Name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Description</label>
+                        <textarea asp-for="Description" id="description" class="form-control" placeholder="Description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2" id="swel">Submit</button>
+                    <button class="btn btn-light" asp-action="Index">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section editorSC{
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}
+
+@section sweet{
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $('#swel').click(function(){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Yeni bir kateqoriya yüklənildi',
+                showConfirmButton: false,
+                timer: 2000
+            })
+        })
+    </script>
+}
+

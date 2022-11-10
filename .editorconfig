@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CS8602: Dereference of a possibly null reference.
+dotnet_diagnostic.CS8602.severity = none
+
+# Default severity for analyzer diagnostics with category 'Interoperability'
+dotnet_analyzer_diagnostic.category-Interoperability.severity = silent
+
+# CS0219: Variable is assigned but its value is never used
+dotnet_diagnostic.CS0219.severity = silent
