@@ -23,30 +23,32 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @{
+                                int itemsCount = 0;
+                            }
                             @foreach (var item in Model)
-                            { 
-                             <tr>
+                            {
+                                itemsCount++;
+                                <tr>
                                 <td>
-                                        @item.Row
-                                    @*@for (var i = 1; i < 0; i++)
-                                    {
-                                           
-                                    }*@
+                                    @itemsCount
                                 </td>
                                 <td>
                                     @item.Name
                                 </td>
                                 <td>
-                                  @* @{
-                                        string itemDescription = item.Description.ToString().Substring(0, 50) + " ...";
-                                    } *@
-                                       @Html.Raw(@item.Description)
+                                    @{
+                                        string itemDescription = item.Description.Length > 50 
+                                            ? item.Description.ToString().Substring(0, 50) + " ..." 
+                                            : item.Description;
+                                    }
+                                       @Html.Raw(@itemDescription)
                                        
                                 </td>
                                 <td>
                                     <a class="btn btn-primary" asp-action="details" asp-route-id="@item.Id">Details</a>
                                     <a class="btn btn-success" asp-action="update" asp-route-id="@item.Id">Update</a>
-                                    <a class="btn btn-danger" asp-action="delete" asp-route-id="@item.Id" id="deleteBtn">Delete</a>
+                                    <a class="btn btn-danger deleteBtn" asp-action="delete" asp-route-id="@item.Id">Delete</a>
                                 </td>
                             </tr>
                             }
@@ -65,7 +67,11 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 
-        $('#deleteBtn').click(function () {
+        $('.deleteBtn').click(function (e) {
+            e.preventDefault();
+
+            const deleteUrl = $(this).attr("href");
+
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -76,11 +82,18 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
+                    fetch(deleteUrl)
+                        .then(response => response.text())
+                        .then(data => {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1500)
+                        })
                 }
             })
         })

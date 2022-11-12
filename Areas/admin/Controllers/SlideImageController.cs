@@ -33,18 +33,18 @@ namespace FlowerSite.Areas.admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SlideImageCreateModel model, IFormFile file)
+        public async Task<IActionResult> Create(SlideImageCreateModel model/*, IFormFile file*/)
         {
-            int width = 1920;
-            int height = 617;
-            string path = await model.Image.GenerateFile(Constans.RootPath);
-            Image image = Image.FromStream(file.OpenReadStream(), true, true);
-            var newImage = new Bitmap(width, height);
-            using(var a = Graphics.FromImage(newImage))
-            {
-                a.DrawImage(image, 0, 0, width, height);
-                newImage.Save(path);
-            }
+        //    int width = 1920;
+        //    int height = 617;
+        //    string path = await model.Image.GenerateFile(Constans.RootPath);
+        //    Image image = Image.FromStream(file.OpenReadStream(), true, true);
+        //    var newImage = new Bitmap(width, height);
+        //    using(var a = Graphics.FromImage(newImage))
+        //    {
+        //        a.DrawImage(image, 0, 0, width, height);
+        //        newImage.Save(path);
+        //    }
 
             if (!ModelState.IsValid) return View();
 

@@ -1,6 +1,10 @@
 using Flower_site.DAL;
 using FlowerSite.Areas.admin.Data;
+using FlowerSite.Data;
+using FlowerSite.Models.IdentityModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FlowerSite
 {
@@ -14,14 +18,35 @@ namespace FlowerSite
             builder.Services.AddDbContext<AppDbContext>(
                 opt => opt.UseSqlServer(builder.Configuration
                 .GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.SignIn.RequireConfirmedEmail = false;
+                opt.User.RequireUniqueEmail = true;
+
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders()
+                .AddErrorDescriber<LocalizedIdentityErrorDescriber>();
+
             builder.Services.AddSession(x => x.IdleTimeout = TimeSpan.FromMinutes(10));
 
             Constans.RootPath = builder.Environment.WebRootPath;
             var app = builder.Build();
 
+            app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
+
+
             app.UseStaticFiles();
-            app.UseSession();
             app.UseRouting();
+            app.UseSession();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

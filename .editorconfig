@@ -8,3 +8,12 @@ dotnet_analyzer_diagnostic.category-Interoperability.severity = silent
 
 # CS0219: Variable is assigned but its value is never used
 dotnet_diagnostic.CS0219.severity = silent
+
+# CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+dotnet_diagnostic.CS8618.severity = silent
+
+# CS8601: Possible null reference assignment.
+dotnet_diagnostic.CS8601.severity = none
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = none
